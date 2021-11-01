@@ -6,12 +6,12 @@ class NumericRandom
 {
     /**
      * 随机数
-     * @param $min
-     * @param $max
-     * @param int $precision
+     * @param integer | float $min 最小值
+     * @param integer | float $max 最大值
+     * @param int $precision 精确小数位数
      * @return float|int
      */
-    public static function random($min,$max,int $precision = 0)
+    public static function random($min,$max,$precision = 0)
     {
        if ($precision == 0) {
            return self::randomInt($min,$max);
@@ -27,7 +27,7 @@ class NumericRandom
 
     private static function randomInt($min=0,$max=null)
     {
-        if (version_compare(PHP_VERSION,'7.0') > 1) {
+        if (function_exists('random_int')) {
             $max = $max === null ? PHP_INT_MAX : $max;
             return random_int($min,$max);
         } else {
@@ -38,7 +38,7 @@ class NumericRandom
 
     private static function randomBaseFloat()
     {
-        if (version_compare(PHP_VERSION,'7.0') > 1) {
+        if (function_exists('random_int')) {
             return bcdiv((string)random_int(0,PHP_INT_MAX),(string)PHP_INT_MAX,10);
         } else {
             return bcdiv((string)mt_rand(),(string)mt_getrandmax(),10);

@@ -4,7 +4,7 @@
 namespace ZZG\ZUtil;
 
 
-class ZUtil
+class ZUtils
 {
 
 

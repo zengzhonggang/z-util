@@ -2,17 +2,28 @@
 
 namespace ZZG\ZUtil\Lib\Random;
 
-use ZZG\ZUtil\Lib\Arr\Arr;
+use ZZG\ZUtil\Helper\ArrayHelper;
 
 class AverageRandom
 {
+    const RETURN_TYPE_ARRAY = 1;
+    const RETURN_TYPE_STRING = 2;
+    /**
+     * 平均随机
+     * @param integer $len 长度
+     * @param string $range 随机字符串范围
+     * @param array $option 其他配置参数。
+     * return_type:返回结果类型;AverageRandom::RETURN_TYPE_ARRAY 数组，AverageRandom::RETURN_TYPE_STRING 字符串
+     * repeat：随机字符串是否可以重复；0：否，1：是
+     * @return array|string
+     */
     public static function random($len, $range, $option = [])
     {
         $range = array_unique(str_split($range));
         $res = [];
         $rangeCount = count($range);
-        $arrayUtil = new Arr($option);
-        if ($arrayUtil->existAndEq('repeat',false)) {
+        $arrayHelper = new ArrayHelper($option);
+        if ($arrayHelper->existAndEq('repeat',false)) {
             if ($rangeCount < $len) {
                 throw new \OverflowException('可选字符串长度不足');
             }
@@ -29,7 +40,7 @@ class AverageRandom
                 $res[] = $range[$index];
             }
         }
-        if ($arrayUtil->existAndEq('return_type','array')) {
+        if ($arrayHelper->existAndEq('return_type',self::RETURN_TYPE_ARRAY)) {
             return $res;
         } else {
             return implode('',$res);
