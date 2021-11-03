@@ -204,4 +204,29 @@ class ArrayUtil
         unset($treeIdKey);
         return $tree;
     }
+
+    /**
+     * 分解多维数据键值
+     * @param string $key 键值组合字符串
+     * @return array
+     */
+    public static function decomposeDepthArrayKey($key)
+    {
+        $keys = [];
+        $splitFunc = function ($key,$step = 0) use (&$splitFunc,&$keys) {
+            $index = strpos($key,'.',$step);
+            if ($index === false) {
+                $keys[] = $key;
+            } elseif ($index-1 >=0 && $key[$index-1] == '\\') {
+                $splitFunc($key,++$step);
+            } else {
+                $k = substr($key,0,$index);
+                $key = str_replace($k.'.','',$key);
+                $keys[] = $k;
+                $splitFunc($key);
+            }
+        };
+        $splitFunc($key);
+        return $keys;
+    }
 }
