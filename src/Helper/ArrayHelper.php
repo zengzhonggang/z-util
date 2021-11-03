@@ -6,6 +6,26 @@ namespace ZZG\ZUtil\Helper;
 
 class ArrayHelper extends \ArrayIterator
 {
+    public function __construct($array = array(), $flags = 0)
+    {
+        foreach ($array as $k => $v) {
+            if (is_array($v)) {
+                $array[$k] = new self($v,$flags);
+            }
+        }
+        parent::__construct($array, $flags);
+    }
+    public function getArrayCopy()
+    {
+        $array = parent::getArrayCopy();
+        foreach ($array as $k => $v) {
+            if ($v instanceof \ArrayIterator) {
+                $array[$k] = $v->getArrayCopy();
+            }
+        }
+        return $array;
+    }
+
     /**
      * 多维数组排序
      * @param string $filed 排序字段，用“.”指定多维数组字段

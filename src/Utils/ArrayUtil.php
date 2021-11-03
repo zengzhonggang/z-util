@@ -178,4 +178,30 @@ class ArrayUtil
         return array_values($result);
     }
 
+    /**
+     * 组建树形数组
+     * @param array $array 原始数组
+     * @param string $masterKey
+     * @param string $slaveKey
+     * @return array
+     */
+    public static function buildTree($array, $masterKey, $slaveKey)
+    {
+        $treeIdKey = [];
+        $tree = [];
+        foreach ($array as $item) {
+            isset($item[$masterKey]) && $treeIdKey[$item[$masterKey]] = $item;
+        }
+        foreach ($treeIdKey as $value) {
+            if (isset($value[$slaveKey])) {
+                if (isset($treeIdKey[$value[$slaveKey]])) {
+                    $treeIdKey[$value[$slaveKey]]['nodes'][] = &$value;
+                } else {
+                    $tree[] = &$value;
+                }
+            }
+        }
+        unset($treeIdKey);
+        return $tree;
+    }
 }
