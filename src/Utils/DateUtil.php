@@ -100,4 +100,16 @@ class DateUtil
         }
         return $difference;
     }
+
+    /**
+     * 判断字符串是否是时间格式
+     * @param string $dataTime
+     * @return bool
+     */
+    public function isDateTime($dataTime)
+    {
+        $timestamp = strtotime($dataTime);
+        //php5.1之前 strtotime失败，返回-1
+        return $timestamp!==false && $timestamp !== -1;
+    }
 }
