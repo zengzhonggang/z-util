@@ -218,6 +218,7 @@ class ArrayUtil
             if ($index === false) {
                 $keys[] = $key;
             } elseif ($index-1 >=0 && $key[$index-1] == '\\') {
+                $key = substr_replace($key,'',$index,1);
                 $splitFunc($key,++$step);
             } else {
                 $k = substr($key,0,$index);
